@@ -2,11 +2,13 @@ import glob
 import os
 import sys
 
+from dynaconf import settings
+
 from parsers.default import format_line
 from parsers.category import find as find_category
 from parsers.words import replace as replace_word
 
-PATH_EXECUTION = os.path.dirname(os.path.realpath(__file__))
+PATH_EXECUTION = settings.PATH_CONTAINS_BANK_STATEMENT_FILES
 
 IGNORE_LINES_CONTAINS_IN_FILE = [
     "saldo em"
@@ -44,7 +46,7 @@ def read_file(file: str):
 
 
 def list_files():
-    files = glob.glob(f"{PATH_EXECUTION}/data/*.txt")
+    files = glob.glob(f"{PATH_EXECUTION}/*.txt")
     for file in files:
         read_file(file)
 
