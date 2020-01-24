@@ -1,5 +1,7 @@
+import csv
 import glob
 import os
+import time
 import sys
 
 
@@ -27,4 +29,20 @@ def read_file(file: str):
 
     with open(file, "r") as file:
         lines_of_file = file.readlines()
-        bank.process(lines_of_file, file_name_as_bank)
+        data = bank.process(lines_of_file, file_name_as_bank)
+        save_csv('result', data)
+
+
+def save_csv(result_file_name: str, data: [tuple]):
+    file_name = (f'{settings.PATH_CONTAINS_BANK_STATEMENT_FILES}'
+                 f'/{result_file_name}_{time.strftime("%Y-%m-%d %H:%M:%S")}.csv')
+
+    with open(
+        file_name,
+        'w',
+        encoding='ISO-8859-15'
+    ) as out:
+        csv_out = csv.writer(out)
+        csv_out.writerow(settings.MOBILLS_CSV_HEADER)
+        for row in data:
+            csv_out.writerow(row)
